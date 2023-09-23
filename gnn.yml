@@ -4,8 +4,6 @@ channels:
 dependencies:
   - python=3.10
   - pip
-  - cartopy
-  - pyproj
   - pip:
     - --find-links https://download.pytorch.org/whl/cu117/torch-2.0.1%2Bcu117-cp310-cp310-linux_x86_64.whl
     - --find-links https://download.pytorch.org/whl/cu117/torchvision-0.15.2%2Bcu117-cp310-cp310-linux_x86_64.whl
@@ -20,3 +18,5 @@ dependencies:
     - torch-sparse
     - clearml
     - clearml-agent
+    - cartopy
+    - pyproj

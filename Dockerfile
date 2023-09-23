@@ -32,9 +32,5 @@ RUN conda clean -a -y
 # Copy the Python file
 COPY start_point.py .
 
-# Let's make sure that these are definitely set in the container
-ENV CLEARML_AGENT_SKIP_PIP_VENV_INSTALL="/miniconda/envs/gnn/bin/python"
-ENV CLEARML_AGENT_SKIP_PYTHON_ENV_INSTALL="1"
-
 # Activate the gnn environment when starting a container
 ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "gnn"]
