@@ -43,6 +43,44 @@ import torch_scatter: OK
 
 As we can see, above Python code created a task in Clearml. Next step is running the docker-agent on the local machine, with Docker image.
 
+### ClearML Agent without Docker
+
+Testing environment:
+* Ubuntu 20.04
+* Driver Version: 525.125.06
+* CUDA version: 11.7
+
+Before starting the clearml-agent, we export the environment variables. Expectation here is that the agent would not be able to execute the test successfully,
+as we have set the Python intepreter to point to the location that exists in the Docker image.
+
+```bash
+export CLEARML_AGENT_SKIP_PYTHON_ENV_INSTALL=1
+export CLEARML_AGENT_SKIP_PIP_VENV_INSTALL=/miniconda/envs/gnn/bin/python
+conda activate clearml
+clearml-agent daemon --queue "docker" --foreground --log-level DEBUG
+```
+
+, we now have the agent listening to a queue called `docker`. Next we clone the task in the ClearML UI, and launch it. Output is as follows:
+
+```bash
+--- BEGIN start_point.py ---
+Python executable: /home/jarno/miniconda3/envs/clearml/bin/python
+import torch_geometric: failed -> No module named 'torch_geometric'
+import torch_scatter: failed -> No module named 'torch_scatter'
+# A list of environment variables
+--- END start_point.py ---
+```
+
+Environment variables are as follows:
+
+```bash
+env | grep CLEARML
+CLEARML_AGENT_SKIP_PYTHON_ENV_INSTALL=1
+CLEARML_AGENT_SKIP_PIP_VENV_INSTALL=/miniconda/envs/gnn/bin/python
+```
+
+As we can see, clearml-agent is picking the Python interpreter that is defined in the active Conda environment and not the one defined by `CLEARML_AGENT_SKIP_PIP_VENV_INSTALL`.
+
 ### ClearML Agent with Docker
 
 Testing environment:
